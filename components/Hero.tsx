@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Globe } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export function Hero() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -13,6 +13,21 @@ export function Hero() {
 
     const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
     const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+    // Hydration fix: Generate particles only on client side
+    const [particles, setParticles] = useState<Array<{ x: string, y: string, scale: number, duration: number, width: string, height: string }>>([]);
+
+    useEffect(() => {
+        const newParticles = Array.from({ length: 20 }).map(() => ({
+            x: Math.random() * 100 + "%",
+            y: Math.random() * 100 + "%",
+            scale: Math.random() * 0.5 + 0.5,
+            duration: Math.random() * 10 + 10,
+            width: Math.random() * 4 + 1 + "px",
+            height: Math.random() * 4 + 1 + "px",
+        }));
+        setParticles(newParticles);
+    }, []);
 
     return (
         <section
@@ -41,27 +56,27 @@ export function Hero() {
 
                 {/* Floating Particles */}
                 <div className="absolute inset-0 overflow-hidden">
-                    {[...Array(20)].map((_, i) => (
+                    {particles.map((p, i) => (
                         <motion.div
                             key={i}
                             className="absolute bg-white rounded-full opacity-20"
                             initial={{
-                                x: Math.random() * 100 + "%",
-                                y: Math.random() * 100 + "%",
-                                scale: Math.random() * 0.5 + 0.5,
+                                x: p.x,
+                                y: p.y,
+                                scale: p.scale,
                             }}
                             animate={{
-                                y: [null, Math.random() * -100 + "%"],
+                                y: [null, parseFloat(p.y) - 100 + "%"],
                                 opacity: [0.2, 0],
                             }}
                             transition={{
-                                duration: Math.random() * 10 + 10,
+                                duration: p.duration,
                                 repeat: Infinity,
                                 ease: "linear",
                             }}
                             style={{
-                                width: Math.random() * 4 + 1 + "px",
-                                height: Math.random() * 4 + 1 + "px",
+                                width: p.width,
+                                height: p.height,
                             }}
                         />
                     ))}
