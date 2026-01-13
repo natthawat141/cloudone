@@ -1,8 +1,7 @@
-"use client";
-
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Globe } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
+import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 
 export function Hero() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -40,6 +39,11 @@ export function Hero() {
                 {/* Animated Grid */}
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
+                {/* Text Hover Effect Background */}
+                <div className="absolute inset-0 z-[1] flex items-center justify-center opacity-40">
+                    <TextHoverEffect text="AIONE" />
+                </div>
+
                 {/* Glowing Orbs */}
                 <motion.div
                     animate={{
@@ -51,11 +55,11 @@ export function Hero() {
                         repeat: Infinity,
                         ease: "easeInOut"
                     }}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-white/[0.05] rounded-full blur-[100px]"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-white/[0.05] rounded-full blur-[100px] z-[2]"
                 />
 
                 {/* Floating Particles */}
-                <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute inset-0 overflow-hidden z-[3]">
                     {particles.map((p, i) => (
                         <motion.div
                             key={i}
